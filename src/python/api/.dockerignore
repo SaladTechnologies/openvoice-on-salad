@@ -1,0 +1,17 @@
+.venv/
+.data/
+.log/
+.pytest_cache
+.vscode
+.azurite
+.image/
+.results/
+dev/
+checkpoints/
+text/
+
+
+.env
+application.log
+local.settings.json
+__pycache__

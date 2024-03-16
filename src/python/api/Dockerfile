@@ -21,6 +21,7 @@ RUN apt-get update && apt-get install -y curl wget ffmpeg unzip git python3-pip
 RUN pip install --upgrade pip
 RUN pip install torch==1.13.1+cu117 torchvision>=0.13.1+cu117 torchaudio>=0.13.1+cu117 --extra-index-url https://download.pytorch.org/whl/cu117 --no-cache-dir 
 RUN pip install  -r inference/requirements.txt
+RUN pip install uvicorn
 
 # Download AzCopy
 RUN wget -O azcopy.tar.gz https://aka.ms/downloadazcopy-v10-linux && tar -xf azcopy.tar.gz --strip-components=1
@@ -34,5 +35,4 @@ RUN wget https://myshell-public-repo-hosting.s3.amazonaws.com/checkpoints_1226.z
     unzip checkpoints_1226.zip && \
     rm -r checkpoints_1226.zip
 
-# ENTRYPOINT ["python3.9", "inference.py"]
-CMD ["tail", "-f", "/dev/null"]
+CMD ["uvicorn", "fast:app", "--host", "::", "--port", "80"]
