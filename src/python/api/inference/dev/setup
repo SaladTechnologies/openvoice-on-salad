@@ -1,0 +1,25 @@
+#! /bin/bash
+
+set -e
+
+echo "setup the curent environment"
+CURRENT_DIRECTORY="$( dirname "${BASH_SOURCE[0]}" )"
+cd "${CURRENT_DIRECTORY}"
+echo "current directory: $( pwd )"
+echo "setup development environment for inference"
+OPENVOICE_DIR="$( cd .. && pwd )"
+echo "dev directory set to: ${OPENVOICE_DIR}"
+echo "remove old virtual environment"
+rm -rf "${OPENVOICE_DIR}/.venv"
+echo "create new virtual environment"
+python3.9 -m venv "${OPENVOICE_DIR}/.venv"
+echo "activate virtual environment"
+source "${OPENVOICE_DIR}/.venv/bin/activate"
+echo "installing dependencies ..."
+
+(cd "${OPENVOICE_DIR}" && pip install --upgrade pip && pip install -r requirements.txt)
+pip install torch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1
+# download the latest model
+wget -P ${OPENVOICE_DIR} https://myshell-public-repo-hosting.s3.amazonaws.com/checkpoints_1226.zip
+unzip ${OPENVOICE_DIR}/checkpoints_1226.zip -d ${OPENVOICE_DIR}
+rm -r ${OPENVOICE_DIR}/checkpoints_1226.zip
