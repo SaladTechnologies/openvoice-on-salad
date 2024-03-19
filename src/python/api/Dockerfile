@@ -32,7 +32,7 @@ RUN mv azcopy /usr/bin/
 WORKDIR /app/inference
 # Download the cloning model
 RUN wget https://myshell-public-repo-hosting.s3.amazonaws.com/checkpoints_1226.zip && \
-    unzip checkpoints_1226.zip && \
+    unzip -o checkpoints_1226.zip && \
     rm -r checkpoints_1226.zip
 
 CMD ["uvicorn", "fast:app", "--host", "::", "--port", "80"]

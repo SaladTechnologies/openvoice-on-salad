@@ -115,6 +115,10 @@ def inference(connection_string: str, input_container_name: str, output_containe
 async def health_check():
     return {"status": "healthy"}
 
+@app.get("/")
+def read_root():
+    return {"Hello": "World"}
+
 @app.post("/process")
 async def process(
     connection_string: str = Query("DefaultEndpointsProtocol=https;AccountName=accountname;AccountKey=key;EndpointSuffix=core.windows.net", description="Azure Storage Connection String"),
@@ -128,7 +132,7 @@ async def process(
     text_file: str = Query(description="Text file to be used for TTS"),
     # processing_container_name: str = Query("preprocess", description="Container name for processing files"),
 ):
-    inference(connection_string, input_container_name, output_container_name, voices_container_name, reference_voice, speed, language, speaker_tone, text_file)
+    result = inference(connection_string, input_container_name, output_container_name, voices_container_name, reference_voice, speed, language, speaker_tone, text_file)
     # Here you can use the parameters to do whatever processing you need
     # For now, it just returns the parameters as they were received
-    return {"status": "success"}
+    return result
